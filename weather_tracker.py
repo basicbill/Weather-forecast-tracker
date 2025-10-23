@@ -31,6 +31,9 @@ TOLERANCES = {
     "precip": 0.1    # inches (for yes/no determination)
 }
 
+# Lead times to track (days ahead to forecast)
+LEAD_TIMES = [1, 3, 7, 15]
+
 # Paths
 BASE_DIR = Path(__file__).parent
 DATA_DIR = BASE_DIR / "data"
@@ -88,20 +91,26 @@ def get_weather_condition(weather_code):
         return "unknown"
 
 
-def save_day_15_forecast():
-    """Fetch and save the day-15 forecast for all locations"""
+def save_daily_forecasts():
+    """Fetch and save forecasts for multiple lead times for all locations"""
     today = datetime.now().date()
-    forecast_date = today + timedelta(days=15)
     
     print(f"\n📅 Today: {today}")
-    print(f"🔮 Fetching forecast for: {forecast_date} (15 days out)")
+    print(f"🔮 Fetching forecasts for lead times: {LEAD_TIMES} days")
     
-    forecast_data = {
-        "date_made": str(today),
-        "forecast_for": str(forecast_date),
-        "locations": {}
-    }
+    # Structure: { lead_time: { date_made, forecast_for, locations: {...} } }
+    forecasts_by_lead_time = {}
     
+    for lead_time in LEAD_TIMES:
+        forecast_date = today + timedelta(days=lead_time)
+        forecasts_by_lead_time[lead_time] = {
+            "lead_time": lead_time,
+            "date_made": str(today),
+            "forecast_for": str(forecast_date),
+            "locations": {}
+        }
+    
+    # Fetch weather data once per location (it includes all days)
     for location_name, coords in LOCATIONS.items():
         print(f"\n📍 Fetching {location_name}...")
         
@@ -110,35 +119,38 @@ def save_day_15_forecast():
             print(f"  ❌ Failed to fetch data for {location_name}")
             continue
         
-        # Get day 15 data (index 15 in the array)
         daily = data["daily"]
-        if len(daily["time"]) < 16:
+        if len(daily["time"]) < max(LEAD_TIMES) + 1:
             print(f"  ⚠️  Not enough forecast data for {location_name}")
             continue
         
-        day_15_index = 15
+        # Extract forecasts for each lead time
+        for lead_time in LEAD_TIMES:
+            forecast_index = lead_time
+            
+            forecast_info = {
+                "lat": coords["lat"],
+                "lon": coords["lon"],
+                "temp_high": daily["temperature_2m_max"][forecast_index],
+                "temp_low": daily["temperature_2m_min"][forecast_index],
+                "precipitation": daily["precipitation_sum"][forecast_index],
+                "weather_code": daily["weather_code"][forecast_index],
+                "condition": get_weather_condition(daily["weather_code"][forecast_index])
+            }
+            
+            forecasts_by_lead_time[lead_time]["locations"][location_name] = forecast_info
         
-        forecast_data["locations"][location_name] = {
-            "lat": coords["lat"],
-            "lon": coords["lon"],
-            "temp_high": daily["temperature_2m_max"][day_15_index],
-            "temp_low": daily["temperature_2m_min"][day_15_index],
-            "precipitation": daily["precipitation_sum"][day_15_index],
-            "weather_code": daily["weather_code"][day_15_index],
-            "condition": get_weather_condition(daily["weather_code"][day_15_index])
-        }
-        
-        print(f"  ✅ High: {forecast_data['locations'][location_name]['temp_high']}°F, "
-              f"Low: {forecast_data['locations'][location_name]['temp_low']}°F, "
-              f"Condition: {forecast_data['locations'][location_name]['condition']}")
+        # Print summary for this location
+        print(f"  ✅ Saved forecasts for {len(LEAD_TIMES)} lead times")
     
-    # Save to file
-    filename = FORECASTS_DIR / f"{today}.json"
-    with open(filename, 'w') as f:
-        json.dump(forecast_data, f, indent=2)
+    # Save each lead time to a separate file
+    for lead_time, forecast_data in forecasts_by_lead_time.items():
+        filename = FORECASTS_DIR / f"{today}_lead{lead_time}.json"
+        with open(filename, 'w') as f:
+            json.dump(forecast_data, f, indent=2)
+        print(f"\n💾 Saved {lead_time}-day forecast to: {filename}")
     
-    print(f"\n💾 Saved forecast to: {filename}")
-    return forecast_data
+    return forecasts_by_lead_time
 
 
 def fetch_actual_weather(lat, lon, date):
@@ -223,84 +235,103 @@ def score_forecast(forecast, actual, location_name):
 
 
 def check_and_score_old_forecasts():
-    """Check for forecasts that are now 15 days old and score them"""
+    """Check for forecasts at each lead time and score them"""
     today = datetime.now().date()
-    fifteen_days_ago = today - timedelta(days=15)
-    
-    forecast_file = FORECASTS_DIR / f"{fifteen_days_ago}.json"
-    
-    if not forecast_file.exists():
-        print(f"\n📭 No forecast from 15 days ago ({fifteen_days_ago}) to score")
-        return
-    
-    print(f"\n🎯 Found forecast from {fifteen_days_ago} - time to score it!")
-    
-    # Load the old forecast
-    with open(forecast_file, 'r') as f:
-        forecast_data = json.load(f)
-    
-    forecast_for_date = forecast_data["forecast_for"]
-    print(f"📊 Scoring forecast for: {forecast_for_date}")
     
     # Load existing results
     if RESULTS_FILE.exists():
         with open(RESULTS_FILE, 'r') as f:
             all_results = json.load(f)
     else:
-        all_results = {"scores": []}
+        all_results = {"scores": [], "by_lead_time": {str(lt): [] for lt in LEAD_TIMES}}
     
-    # Check if we've already scored this
-    already_scored = any(
-        r["forecast_for"] == forecast_for_date 
-        for r in all_results["scores"]
-    )
+    scored_anything = False
     
-    if already_scored:
-        print(f"  ⚠️  Already scored this forecast, skipping")
-        return
-    
-    result_entry = {
-        "date_made": forecast_data["date_made"],
-        "forecast_for": forecast_for_date,
-        "scored_on": str(today),
-        "locations": {}
-    }
-    
-    # Score each location
-    for location_name, forecast in forecast_data["locations"].items():
-        print(f"\n📍 Scoring {location_name}...")
+    # Check each lead time
+    for lead_time in LEAD_TIMES:
+        days_ago = today - timedelta(days=lead_time)
+        forecast_file = FORECASTS_DIR / f"{days_ago}_lead{lead_time}.json"
         
-        actual = fetch_actual_weather(
-            forecast["lat"], 
-            forecast["lon"], 
-            forecast_for_date
-        )
-        
-        if actual is None:
-            print(f"  ❌ Could not fetch actual weather for {location_name}")
+        if not forecast_file.exists():
             continue
         
-        scores = score_forecast(forecast, actual, location_name)
-        result_entry["locations"][location_name] = scores
+        print(f"\n🎯 Found {lead_time}-day forecast from {days_ago} - time to score it!")
         
-        print(f"  🌡️  Temp High: {scores['temp_high']['forecast']}°F → {scores['temp_high']['actual']}°F "
-              f"({'✅' if scores['temp_high']['accurate'] else '❌'} {scores['temp_high']['diff']}° diff)")
-        print(f"  🌡️  Temp Low: {scores['temp_low']['forecast']}°F → {scores['temp_low']['actual']}°F "
-              f"({'✅' if scores['temp_low']['accurate'] else '❌'} {scores['temp_low']['diff']}° diff)")
-        print(f"  🌧️  Precip: {scores['precipitation']['forecast']} → {scores['precipitation']['actual']} "
-              f"({'✅' if scores['precipitation']['accurate'] else '❌'})")
-        print(f"  ☁️  Condition: {scores['condition']['forecast']} → {scores['condition']['actual']} "
-              f"({'✅' if scores['condition']['accurate'] else '❌'})")
-        print(f"  📊 Overall: {scores['overall']['percentage']}% accurate")
+        # Load the old forecast
+        with open(forecast_file, 'r') as f:
+            forecast_data = json.load(f)
+        
+        forecast_for_date = forecast_data["forecast_for"]
+        
+        # Check if we've already scored this
+        already_scored = any(
+            r["forecast_for"] == forecast_for_date and r["lead_time"] == lead_time
+            for r in all_results["scores"]
+        )
+        
+        if already_scored:
+            print(f"  ⚠️  Already scored this {lead_time}-day forecast, skipping")
+            continue
+        
+        print(f"📊 Scoring {lead_time}-day forecast for: {forecast_for_date}")
+        
+        result_entry = {
+            "lead_time": lead_time,
+            "date_made": forecast_data["date_made"],
+            "forecast_for": forecast_for_date,
+            "scored_on": str(today),
+            "locations": {}
+        }
+        
+        # Score each location
+        for location_name, forecast in forecast_data["locations"].items():
+            print(f"\n📍 Scoring {location_name}...")
+            
+            actual = fetch_actual_weather(
+                forecast["lat"], 
+                forecast["lon"], 
+                forecast_for_date
+            )
+            
+            if actual is None:
+                print(f"  ❌ Could not fetch actual weather for {location_name}")
+                continue
+            
+            scores = score_forecast(forecast, actual, location_name)
+            result_entry["locations"][location_name] = scores
+            
+            print(f"  🌡️  Temp High: {scores['temp_high']['forecast']}°F → {scores['temp_high']['actual']}°F "
+                  f"({'✅' if scores['temp_high']['accurate'] else '❌'} {scores['temp_high']['diff']}° diff)")
+            print(f"  🌡️  Temp Low: {scores['temp_low']['forecast']}°F → {scores['temp_low']['actual']}°F "
+                  f"({'✅' if scores['temp_low']['accurate'] else '❌'} {scores['temp_low']['diff']}° diff)")
+            print(f"  🌧️  Precip: {scores['precipitation']['forecast']} → {scores['precipitation']['actual']} "
+                  f"({'✅' if scores['precipitation']['accurate'] else '❌'})")
+            print(f"  ☁️  Condition: {scores['condition']['forecast']} → {scores['condition']['actual']} "
+                  f"({'✅' if scores['condition']['accurate'] else '❌'})")
+            print(f"  📊 Overall: {scores['overall']['percentage']}% accurate")
+        
+        # Add to results
+        all_results["scores"].append(result_entry)
+        
+        # Also organize by lead time for easier analysis
+        lead_time_key = str(lead_time)
+        if lead_time_key not in all_results["by_lead_time"]:
+            all_results["by_lead_time"][lead_time_key] = []
+        all_results["by_lead_time"][lead_time_key].append(result_entry)
+        
+        scored_anything = True
+        print(f"\n✅ Completed scoring {lead_time}-day forecast")
     
-    # Add to results and save
-    all_results["scores"].append(result_entry)
-    all_results["last_updated"] = str(today)
-    
-    with open(RESULTS_FILE, 'w') as f:
-        json.dump(all_results, f, indent=2)
-    
-    print(f"\n💾 Saved results to: {RESULTS_FILE}")
+    if scored_anything:
+        all_results["last_updated"] = str(today)
+        
+        with open(RESULTS_FILE, 'w') as f:
+            json.dump(all_results, f, indent=2)
+        
+        print(f"\n💾 Saved results to: {RESULTS_FILE}")
+    else:
+        print(f"\n📭 No forecasts ready to score yet")
+
 
 
 def main():
@@ -311,10 +342,10 @@ def main():
     
     ensure_directories()
     
-    # Step 1: Save today's day-15 forecast
-    save_day_15_forecast()
+    # Step 1: Save today's forecasts for all lead times
+    save_daily_forecasts()
     
-    # Step 2: Check if any forecast is now 15 days old and score it
+    # Step 2: Check if any forecasts are ready to score and score them
     check_and_score_old_forecasts()
     
     print("\n" + "=" * 60)

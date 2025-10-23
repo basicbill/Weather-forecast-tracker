@@ -5,10 +5,13 @@ Automatically tracks the accuracy of 15-day weather forecasts by comparing predi
 ## How It Works
 
 1. **Every day at 8 AM UTC**, GitHub Actions runs the tracker
-2. It fetches the **day-15 forecast** for your locations and saves it
-3. It checks if there's a forecast from **15 days ago** to score
-4. If yes, it fetches the actual weather and compares it
-5. Results are saved and the dashboard updates automatically
+2. It fetches forecasts for **4 different lead times**: 1-day, 3-day, 7-day, and 15-day ahead
+3. Saves all forecasts for later comparison
+4. Checks if any forecasts are ready to score (when that date arrives)
+5. Compares forecast to actual weather and calculates accuracy
+6. Results are saved and the dashboard updates automatically
+
+**This gives you the accuracy degradation curve:** See how accuracy drops as you forecast further into the future.
 
 ## Setup Instructions
 
@@ -131,9 +134,13 @@ Use https://crontab.guru/ to help with the format.
 
 ## How Long Until I See Results?
 
-- **Day 1-14:** The tracker is collecting forecasts. Dashboard says "No Data Yet"
-- **Day 15:** First score appears! 🎉
-- **Ongoing:** New scores added daily
+- **Day 1 (tomorrow):** First 1-day forecast scored! 🎉
+- **Day 3:** First 3-day forecast scored
+- **Day 7:** First 7-day forecast scored
+- **Day 15:** First 15-day forecast scored
+- **Ongoing:** New scores added daily for all lead times
+
+You'll start seeing results immediately (tomorrow!) and build up a comprehensive accuracy degradation curve over the first 15 days.
 
 ## Tolerance Settings
 

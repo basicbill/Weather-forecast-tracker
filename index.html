@@ -309,14 +309,21 @@
             
             // Calculate overall statistics
             const stats = calculateOverallStats(scores);
+            const leadTimeStats = calculateLeadTimeStats(scores);
             
             // Build HTML
             let html = `
                 <div class="stats-grid">
                     <div class="stat-card">
+                        <div class="stat-label">Total Forecasts Scored</div>
+                        <div class="stat-value">${stats.totalForecasts}</div>
+                        <div class="stat-sublabel">Across all lead times</div>
+                    </div>
+                    
+                    <div class="stat-card">
                         <div class="stat-label">Overall Accuracy</div>
                         <div class="stat-value">${stats.overallAccuracy}%</div>
-                        <div class="stat-sublabel">${stats.totalForecasts} forecasts scored</div>
+                        <div class="stat-sublabel">All parameters combined</div>
                     </div>
                     
                     <div class="stat-card">
@@ -330,11 +337,16 @@
                         <div class="stat-value">${stats.precipAccuracy}%</div>
                         <div class="stat-sublabel">Yes/No forecasts</div>
                     </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-label">Condition Accuracy</div>
-                        <div class="stat-value">${stats.conditionAccuracy}%</div>
-                        <div class="stat-sublabel">Weather conditions</div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">📉 Accuracy by Forecast Lead Time</div>
+                    <div class="stats-grid">
+                        ${generateLeadTimeCards(leadTimeStats)}
+                    </div>
+                    <div style="margin-top: 20px; padding: 15px; background: #f9fafb; border-radius: 8px; font-size: 14px; color: #666;">
+                        <strong>Accuracy Degradation:</strong> Shows how forecast accuracy decreases as you look further into the future.
+                        Tomorrow's forecast should be much more accurate than 15 days out.
                     </div>
                 </div>
                 
@@ -352,11 +364,71 @@
                 
                 <div class="section" style="text-align: center; color: #666; font-size: 14px;">
                     <p>Last updated: ${data.last_updated || 'Unknown'}</p>
-                    <p style="margin-top: 10px;">Forecasts made 15 days in advance • Scored against actual weather</p>
+                    <p style="margin-top: 10px;">Tracking 1-day, 3-day, 7-day, and 15-day forecasts • 10 locations across US climate zones</p>
                 </div>
             `;
             
             document.getElementById('content').innerHTML = html;
+        }
+        
+        function calculateLeadTimeStats(scores) {
+            const leadTimes = [1, 3, 7, 15];
+            const stats = {};
+            
+            leadTimes.forEach(lt => {
+                stats[lt] = {
+                    count: 0,
+                    totalCorrect: 0,
+                    totalMetrics: 0
+                };
+            });
+            
+            scores.forEach(score => {
+                const lt = score.lead_time || 15; // Default to 15 for backwards compatibility
+                
+                if (!stats[lt]) return;
+                
+                Object.values(score.locations).forEach(location => {
+                    stats[lt].count++;
+                    
+                    if (location.temp_high?.accurate) stats[lt].totalCorrect++;
+                    if (location.temp_low?.accurate) stats[lt].totalCorrect++;
+                    if (location.precipitation?.accurate) stats[lt].totalCorrect++;
+                    if (location.condition?.accurate) stats[lt].totalCorrect++;
+                    
+                    stats[lt].totalMetrics += 4;
+                });
+            });
+            
+            // Calculate percentages
+            Object.keys(stats).forEach(lt => {
+                if (stats[lt].totalMetrics > 0) {
+                    stats[lt].percentage = Math.round((stats[lt].totalCorrect / stats[lt].totalMetrics) * 100);
+                } else {
+                    stats[lt].percentage = 0;
+                }
+            });
+            
+            return stats;
+        }
+        
+        function generateLeadTimeCards(leadTimeStats) {
+            const leadTimes = [1, 3, 7, 15];
+            
+            return leadTimes.map(lt => {
+                const stat = leadTimeStats[lt];
+                const hasData = stat.count > 0;
+                const percentage = hasData ? stat.percentage : 0;
+                const colorClass = percentage >= 75 ? 'good' : percentage >= 50 ? '' : 'bad';
+                
+                return `
+                    <div class="stat-card">
+                        <div class="stat-label">${lt}-Day Forecast</div>
+                        <div class="stat-value ${hasData ? colorClass : ''}">${hasData ? percentage + '%' : '—'}</div>
+                        <div class="stat-sublabel">${hasData ? stat.count + ' forecasts' : 'No data yet'}</div>
+                    </div>
+                `;
+            }).join('');
         }
         
         function calculateOverallStats(scores) {
@@ -484,7 +556,7 @@
                 new Date(b.forecast_for) - new Date(a.forecast_for)
             );
             
-            return sorted.slice(0, 10).map(score => {
+            return sorted.slice(0, 20).map(score => {
                 const date = new Date(score.forecast_for);
                 const dateStr = date.toLocaleDateString('en-US', { 
                     weekday: 'long', 
@@ -492,6 +564,9 @@
                     month: 'long', 
                     day: 'numeric' 
                 });
+                
+                const leadTime = score.lead_time || 15; // Default to 15 for backwards compatibility
+                const leadTimeLabel = leadTime === 1 ? '1-day' : `${leadTime}-day`;
                 
                 // Calculate overall percentage for this forecast
                 let totalCorrect = 0;
@@ -533,7 +608,12 @@
                 return `
                     <div class="score-entry">
                         <div class="score-header">
-                            <div class="score-date">📅 ${dateStr}</div>
+                            <div>
+                                <div class="score-date">📅 ${dateStr}</div>
+                                <div style="font-size: 13px; color: #666; margin-top: 3px;">
+                                    ${leadTimeLabel} forecast
+                                </div>
+                            </div>
                             <div class="score-overall ${overallClass}">${overallPct}% Accurate</div>
                         </div>
                         <div style="font-size: 12px; color: #666; margin-bottom: 10px;">

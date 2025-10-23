@@ -51,8 +51,10 @@
    - Click "Deploy site"
 
 □ 7. WAIT FOR RESULTS
-   - Day 1-14: Collecting forecasts
-   - Day 15: First scores appear!
+   - Tomorrow: First 1-day forecast scored!
+   - Day 3: First 3-day forecast scored
+   - Day 7: First 7-day forecast scored
+   - Day 15: First 15-day forecast scored
    - Check your Netlify URL anytime
 
 DONE! The system now runs automatically every day.
@@ -90,6 +92,17 @@ DONE! The system now runs automatically every day.
   - Precipitation: >0.1" = yes, <0.1" = no
   
   Change these in weather_tracker.py
+
+═════════════════════════════════════════
+
+📊 FORECAST LEAD TIMES
+  - 1-day ahead (tomorrow)
+  - 3-day ahead
+  - 7-day ahead  
+  - 15-day ahead
+  
+  This shows the accuracy degradation curve
+  Change LEAD_TIMES in weather_tracker.py
 
 ═════════════════════════════════════════
 

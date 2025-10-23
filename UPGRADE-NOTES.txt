@@ -1,0 +1,98 @@
+🎉 MULTI-LEAD-TIME UPGRADE
+
+═════════════════════════════════════════
+WHAT CHANGED
+═════════════════════════════════════════
+
+✅ Now tracks FOUR forecast lead times instead of one:
+   • 1-day ahead (tomorrow's forecast)
+   • 3-day ahead
+   • 7-day ahead
+   • 15-day ahead
+
+✅ Shows accuracy degradation curve
+   • See how accuracy drops as you forecast further out
+   • Compare short-term vs long-term forecast reliability
+
+✅ Updated dashboard displays:
+   • Accuracy by lead time cards at the top
+   • Each recent score shows which lead time it represents
+   • Better data visualization
+
+═════════════════════════════════════════
+NEW TIMELINE
+═════════════════════════════════════════
+
+OLD: Wait 15 days for first result
+NEW: See results starting TOMORROW!
+
+• Tomorrow (Day 1): First 1-day forecast scored ✨
+• Day 3: First 3-day forecast scored
+• Day 7: First 7-day forecast scored  
+• Day 15: First 15-day forecast scored
+
+Full accuracy curve visible after just 15 days!
+
+═════════════════════════════════════════
+WHAT TO DO
+═════════════════════════════════════════
+
+1. Download the new zip file: weather-forecast-tracker-v2.zip
+
+2. If you already set up the repo:
+   - Delete the old files from your GitHub repo
+   - Upload all the new files
+   - Commit and push
+   - The next run will use the new multi-lead-time system
+
+3. If you haven't set up yet:
+   - Just follow SETUP.txt as normal
+   - You'll get the full multi-lead-time version
+
+4. Delete that manual test forecast file (if you want):
+   - The one from today in data/forecasts/
+   - Tomorrow's scheduled run will create proper multi-lead-time files
+   - Files will now be named like: 2024-10-23_lead1.json, 2024-10-23_lead3.json, etc.
+
+═════════════════════════════════════════
+TECHNICAL DETAILS
+═════════════════════════════════════════
+
+Files Modified:
+✓ weather_tracker.py - Complete rewrite to handle multiple lead times
+✓ index.html - Dashboard now shows accuracy by lead time
+✓ README.md - Updated documentation
+✓ SETUP.txt - Updated timeline and info
+
+Data Structure:
+• OLD: One file per day (2024-10-23.json)
+• NEW: Four files per day (2024-10-23_lead1.json, _lead3.json, _lead7.json, _lead15.json)
+
+Backward Compatible:
+• Old results still display correctly
+• New system recognizes old data format
+
+═════════════════════════════════════════
+EXPECTED RESULTS
+═════════════════════════════════════════
+
+You should see an accuracy pattern like this:
+
+1-day forecast:   ~85-95% accurate
+3-day forecast:   ~75-85% accurate
+7-day forecast:   ~60-75% accurate
+15-day forecast:  ~45-60% accurate
+
+This varies by location:
+• Stable climates (Phoenix): Better long-range accuracy
+• Variable climates (Bismarck): Worse long-range accuracy
+
+═════════════════════════════════════════
+QUESTIONS?
+═════════════════════════════════════════
+
+The system still runs automatically at 8 AM UTC daily.
+No changes to GitHub Actions or Netlify needed.
+Just replace the files and you're good to go!
+
+Results start appearing TOMORROW instead of in 15 days. 🎉
