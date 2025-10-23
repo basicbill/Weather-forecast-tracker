@@ -1,0 +1,96 @@
+{
+  "date_made": "2025-10-23",
+  "forecast_for": "2025-11-07",
+  "locations": {
+    "KBIS": {
+      "lat": 46.7727,
+      "lon": -100.7467,
+      "temp_high": 58.9,
+      "temp_low": 40.8,
+      "precipitation": 0.0,
+      "weather_code": 3,
+      "condition": "cloudy"
+    },
+    "KBOS": {
+      "lat": 42.3656,
+      "lon": -71.0096,
+      "temp_high": 49.0,
+      "temp_low": 37.3,
+      "precipitation": 0.0,
+      "weather_code": 3,
+      "condition": "cloudy"
+    },
+    "KDFW": {
+      "lat": 32.8998,
+      "lon": -97.0403,
+      "temp_high": 74.6,
+      "temp_low": 56.1,
+      "precipitation": 0.024,
+      "weather_code": 51,
+      "condition": "drizzle"
+    },
+    "KDEN": {
+      "lat": 39.8561,
+      "lon": -104.6737,
+      "temp_high": 62.0,
+      "temp_low": 35.0,
+      "precipitation": 0.0,
+      "weather_code": 0,
+      "condition": "clear"
+    },
+    "KLAX": {
+      "lat": 33.9416,
+      "lon": -118.4085,
+      "temp_high": 74.2,
+      "temp_low": 65.8,
+      "precipitation": 0.0,
+      "weather_code": 1,
+      "condition": "partly_cloudy"
+    },
+    "KMIA": {
+      "lat": 25.7959,
+      "lon": -80.287,
+      "temp_high": 79.4,
+      "temp_low": 76.2,
+      "precipitation": 0.0,
+      "weather_code": 3,
+      "condition": "cloudy"
+    },
+    "KOMA": {
+      "lat": 41.3032,
+      "lon": -95.8941,
+      "temp_high": 50.1,
+      "temp_low": 48.4,
+      "precipitation": 0.39,
+      "weather_code": 61,
+      "condition": "rainy"
+    },
+    "KORD": {
+      "lat": 41.9742,
+      "lon": -87.9073,
+      "temp_high": 56.6,
+      "temp_low": 44.9,
+      "precipitation": 0.118,
+      "weather_code": 53,
+      "condition": "drizzle"
+    },
+    "KPDX": {
+      "lat": 45.5898,
+      "lon": -122.5951,
+      "temp_high": 55.4,
+      "temp_low": 44.7,
+      "precipitation": 0.0,
+      "weather_code": 3,
+      "condition": "cloudy"
+    },
+    "KPHX": {
+      "lat": 33.4342,
+      "lon": -112.008,
+      "temp_high": 82.5,
+      "temp_low": 69.9,
+      "precipitation": 0.0,
+      "weather_code": 0,
+      "condition": "clear"
+    }
+  }
+}
