@@ -1,0 +1,35 @@
+name: Daily Weather Forecast Tracker
+
+on:
+  schedule:
+    # Run at 8:00 AM UTC daily (adjust timezone as needed)
+    # This is 3:00 AM Central Time / 2:00 AM Mountain Time
+    - cron: '0 8 * * *'
+  
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  fetch-and-score:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Run weather tracker
+        run: |
+          python weather_tracker.py
+      
+      - name: Commit and push if changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/
+          git diff --staged --quiet || git commit -m "Update weather data - $(date +'%Y-%m-%d')"
+          git push

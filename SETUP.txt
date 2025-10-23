@@ -1,0 +1,123 @@
+🚀 QUICK SETUP CHECKLIST
+========================
+
+□ 1. CREATE GITHUB REPO
+   - Go to: https://github.com/new
+   - Name: weather-forecast-tracker
+   - Make it PUBLIC
+   - Don't add any files yet
+   - Click "Create repository"
+
+□ 2. UPLOAD FILES
+   - Upload all files from this folder to your new repo
+   - Keep the folder structure (.github/workflows/, data/, etc.)
+   - Commit to main branch
+
+□ 3. ENABLE GITHUB ACTIONS PERMISSIONS
+   - Go to repo Settings → Actions → General
+   - Select "Read and write permissions"
+   - Save
+
+□ 4. LOCATIONS ARE PRE-CONFIGURED
+   - Already set with 10 major US airports:
+     * KBIS (Bismarck, ND)
+     * KBOS (Boston Logan)
+     * KDFW (Dallas/Fort Worth)
+     * KDEN (Denver Intl)
+     * KLAX (Los Angeles Intl)
+     * KMIA (Miami Intl)
+     * KOMA (Omaha Eppley)
+     * KORD (Chicago O'Hare)
+     * KPDX (Portland Intl)
+     * KPHX (Phoenix Sky Harbor)
+   - Comprehensive US climate zone coverage
+   - To change: Edit weather_tracker.py (line 11)
+   - Use https://www.latlong.net/ for coordinates
+
+□ 5. TEST MANUALLY
+   - Go to Actions tab in GitHub
+   - Click "Daily Weather Forecast Tracker"
+   - Click "Run workflow"
+   - Wait for it to complete
+
+□ 6. DEPLOY TO NETLIFY
+   - Go to: https://app.netlify.com
+   - Click "Add new site" → "Import an existing project"
+   - Connect GitHub
+   - Select your repo
+   - Deploy settings:
+     * Build command: (leave blank)
+     * Publish directory: /
+   - Click "Deploy site"
+
+□ 7. WAIT FOR RESULTS
+   - Day 1-14: Collecting forecasts
+   - Day 15: First scores appear!
+   - Check your Netlify URL anytime
+
+DONE! The system now runs automatically every day.
+
+═════════════════════════════════════════
+
+⏰ SCHEDULE (Default: 8 AM UTC)
+  - 3 AM Central Time
+  - 2 AM Mountain Time (Arizona)
+  
+  To change: Edit .github/workflows/daily-weather.yml
+  Use https://crontab.guru/ for help
+
+═════════════════════════════════════════
+
+📍 DEFAULT LOCATIONS (10 major airports)
+  - KBIS - Bismarck, ND (Northern Plains)
+  - KBOS - Boston Logan (Northeast)
+  - KDFW - Dallas/Fort Worth (South Central)
+  - KDEN - Denver International (Mountain)
+  - KLAX - Los Angeles International (SoCal Coast)
+  - KMIA - Miami International (Subtropical)
+  - KOMA - Omaha Eppley (Central Plains)
+  - KORD - Chicago O'Hare (Midwest)
+  - KPDX - Portland International (Pacific NW)
+  - KPHX - Phoenix Sky Harbor (Desert Southwest)
+  
+  Complete coverage of US climate zones
+  Change these in weather_tracker.py if desired
+
+═════════════════════════════════════════
+
+⚙️ TOLERANCE SETTINGS
+  - Temperature: ±3°F
+  - Precipitation: >0.1" = yes, <0.1" = no
+  
+  Change these in weather_tracker.py
+
+═════════════════════════════════════════
+
+❓ TROUBLESHOOTING
+
+Problem: "No workflows found"
+Solution: Check .github/workflows/daily-weather.yml is in the right place
+
+Problem: "Permission denied" 
+Solution: Enable write permissions in Settings → Actions
+
+Problem: Dashboard shows error
+Solution: Wait for Day 15 to see first results
+
+═════════════════════════════════════════
+
+📁 FILE STRUCTURE MUST LOOK LIKE THIS:
+
+weather-forecast-tracker/
+├── .github/
+│   └── workflows/
+│       └── daily-weather.yml
+├── data/
+│   ├── .gitkeep
+│   └── forecasts/
+│       └── .gitkeep
+├── .gitignore
+├── index.html
+├── README.md
+├── SETUP.txt (this file)
+└── weather_tracker.py
