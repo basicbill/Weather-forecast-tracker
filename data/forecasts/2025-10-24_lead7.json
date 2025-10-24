@@ -1,0 +1,97 @@
+{
+  "lead_time": 7,
+  "date_made": "2025-10-24",
+  "forecast_for": "2025-10-31",
+  "locations": {
+    "KBIS": {
+      "lat": 46.7727,
+      "lon": -100.7467,
+      "temp_high": 39.6,
+      "temp_low": 35.1,
+      "precipitation": 0.035,
+      "weather_code": 51,
+      "condition": "drizzle"
+    },
+    "KBOS": {
+      "lat": 42.3656,
+      "lon": -71.0096,
+      "temp_high": 54.7,
+      "temp_low": 44.4,
+      "precipitation": 0.0,
+      "weather_code": 3,
+      "condition": "cloudy"
+    },
+    "KDFW": {
+      "lat": 32.8998,
+      "lon": -97.0403,
+      "temp_high": 71.3,
+      "temp_low": 64.3,
+      "precipitation": 0.059,
+      "weather_code": 51,
+      "condition": "drizzle"
+    },
+    "KDEN": {
+      "lat": 39.8561,
+      "lon": -104.6737,
+      "temp_high": 52.9,
+      "temp_low": 32.2,
+      "precipitation": 0.0,
+      "weather_code": 3,
+      "condition": "cloudy"
+    },
+    "KLAX": {
+      "lat": 33.9416,
+      "lon": -118.4085,
+      "temp_high": 78.8,
+      "temp_low": 69.5,
+      "precipitation": 0.0,
+      "weather_code": 3,
+      "condition": "cloudy"
+    },
+    "KMIA": {
+      "lat": 25.7959,
+      "lon": -80.287,
+      "temp_high": 76.9,
+      "temp_low": 64.3,
+      "precipitation": 0.0,
+      "weather_code": 0,
+      "condition": "clear"
+    },
+    "KOMA": {
+      "lat": 41.3032,
+      "lon": -95.8941,
+      "temp_high": 52.0,
+      "temp_low": 39.7,
+      "precipitation": 0.0,
+      "weather_code": 3,
+      "condition": "cloudy"
+    },
+    "KORD": {
+      "lat": 41.9742,
+      "lon": -87.9073,
+      "temp_high": 56.4,
+      "temp_low": 42.0,
+      "precipitation": 0.0,
+      "weather_code": 3,
+      "condition": "cloudy"
+    },
+    "KPDX": {
+      "lat": 45.5898,
+      "lon": -122.5951,
+      "temp_high": 60.4,
+      "temp_low": 51.3,
+      "precipitation": 0.142,
+      "weather_code": 53,
+      "condition": "drizzle"
+    },
+    "KPHX": {
+      "lat": 33.4342,
+      "lon": -112.008,
+      "temp_high": 87.5,
+      "temp_low": 78.5,
+      "precipitation": 0.0,
+      "weather_code": 3,
+      "condition": "cloudy"
+    }
+  }
+}
