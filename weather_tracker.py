@@ -48,7 +48,7 @@ def fetch_nws_grid_point(lat, lon):
     headers = {"User-Agent": "WeatherForecastTracker/1.0"}
     
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=headers, timeout=30)
         response.raise_for_status()
         data = response.json()
         
@@ -88,7 +88,7 @@ def fetch_nws_forecast(grid_data):
     headers = {"User-Agent": "WeatherForecastTracker/1.0"}
     
     try:
-        response = requests.get(grid_data["forecast_url"], headers=headers, timeout=10)
+        response = requests.get(grid_data["forecast_url"], headers=headers, timeout=30)
         response.raise_for_status()
         data = response.json()
         
@@ -136,7 +136,7 @@ def fetch_open_meteo_forecast(lat, lon, days_ahead):
     }
     
     try:
-        response = requests.get(url, params=params, timeout=10)
+        response = requests.get(url, params=params, timeout=30)
         response.raise_for_status()
         data = response.json()
         
@@ -164,7 +164,7 @@ def fetch_open_meteo_actual(lat, lon, date):
     }
     
     try:
-        response = requests.get(url, params=params, timeout=10)
+        response = requests.get(url, params=params, timeout=30)
         response.raise_for_status()
         data = response.json()
         
@@ -214,8 +214,16 @@ def check_and_score_forecasts():
         with open(f"data/forecasts/{filename}", 'r') as f:
             forecast = json.load(f)
         
+        # Handle both old and new key names for target date
+        target_date = forecast.get("target_date") or forecast.get("forecast_for")
+        
+        # Skip if we can't find a target date
+        if not target_date:
+            print(f"Warning: No target_date or forecast_for in {filename}")
+            continue
+        
         # Check if this forecast is for today (ready to score)
-        if forecast["target_date"] == today:
+        if target_date == today:
             # Check if already scored
             already_scored = any(
                 s["location"] == forecast["location"] and 
