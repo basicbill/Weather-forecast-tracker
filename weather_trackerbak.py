@@ -1,4 +1,5 @@
 import requests
+from requests.adapters import HTTPAdapter, Retry
 import json
 from datetime import datetime, timedelta
 import os
@@ -25,6 +26,24 @@ TOLERANCES = {
 
 NWS_GRID_CACHE_FILE = "data/nws_grid_cache.json"
 
+# Create a session with retry logic
+def create_session():
+    """Create requests session with retry logic"""
+    session = requests.Session()
+    retries = Retry(
+        total=5,  # number of retries
+        backoff_factor=2,  # wait 1s, 2s, 4s, 8s, 16s between retries
+        status_forcelist=[429, 500, 502, 503, 504],  # retry on these HTTP codes
+        raise_on_status=False  # don't raise exception, let us handle it
+    )
+    adapter = HTTPAdapter(max_retries=retries)
+    session.mount('https://', adapter)
+    session.mount('http://', adapter)
+    return session
+
+# Global session object
+SESSION = create_session()
+
 def ensure_directories():
     """Create necessary directories if they don't exist"""
     os.makedirs("data/forecasts", exist_ok=True)
@@ -48,7 +67,7 @@ def fetch_nws_grid_point(lat, lon):
     headers = {"User-Agent": "WeatherForecastTracker/1.0"}
     
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = SESSION.get(url, headers=headers, timeout=60)
         response.raise_for_status()
         data = response.json()
         
@@ -60,7 +79,7 @@ def fetch_nws_grid_point(lat, lon):
             "forecast_url": properties.get("forecast")
         }
     except Exception as e:
-        print(f"Error fetching NWS grid point for {lat},{lon}: {e}")
+        print(f"Warning: Error fetching NWS grid point for {lat},{lon}: {e}")
         return None
 
 def get_nws_grid_point(location_code, lat, lon):
@@ -88,7 +107,7 @@ def fetch_nws_forecast(grid_data):
     headers = {"User-Agent": "WeatherForecastTracker/1.0"}
     
     try:
-        response = requests.get(grid_data["forecast_url"], headers=headers, timeout=10)
+        response = SESSION.get(grid_data["forecast_url"], headers=headers, timeout=60)
         response.raise_for_status()
         data = response.json()
         
@@ -117,7 +136,7 @@ def fetch_nws_forecast(grid_data):
         
         return forecast_data
     except Exception as e:
-        print(f"Error fetching NWS forecast: {e}")
+        print(f"Warning: Error fetching NWS forecast: {e}")
         return None
 
 def fetch_open_meteo_forecast(lat, lon, days_ahead):
@@ -136,7 +155,7 @@ def fetch_open_meteo_forecast(lat, lon, days_ahead):
     }
     
     try:
-        response = requests.get(url, params=params, timeout=10)
+        response = SESSION.get(url, params=params, timeout=60)
         response.raise_for_status()
         data = response.json()
         
@@ -146,7 +165,7 @@ def fetch_open_meteo_forecast(lat, lon, days_ahead):
             "precip": data["daily"]["precipitation_sum"][0]
         }
     except Exception as e:
-        print(f"Error fetching Open-Meteo forecast: {e}")
+        print(f"Warning: Error fetching Open-Meteo forecast: {e}")
         return None
 
 def fetch_open_meteo_actual(lat, lon, date):
@@ -164,7 +183,7 @@ def fetch_open_meteo_actual(lat, lon, date):
     }
     
     try:
-        response = requests.get(url, params=params, timeout=10)
+        response = SESSION.get(url, params=params, timeout=60)
         response.raise_for_status()
         data = response.json()
         
@@ -174,7 +193,7 @@ def fetch_open_meteo_actual(lat, lon, date):
             "precip": data["daily"]["precipitation_sum"][0]
         }
     except Exception as e:
-        print(f"Error fetching actual weather: {e}")
+        print(f"Warning: Error fetching actual weather: {e}")
         return None
 
 def save_forecast(location, date, lead_time, open_meteo_data, nws_data):
@@ -211,11 +230,23 @@ def check_and_score_forecasts():
         if not filename.endswith(".json"):
             continue
         
-        with open(f"data/forecasts/{filename}", 'r') as f:
-            forecast = json.load(f)
+        try:
+            with open(f"data/forecasts/{filename}", 'r') as f:
+                forecast = json.load(f)
+        except Exception as e:
+            print(f"Warning: Could not read {filename}: {e}")
+            continue
+        
+        # Handle both old and new key names for target date
+        target_date = forecast.get("target_date") or forecast.get("forecast_for")
+        
+        # Skip if we can't find a target date
+        if not target_date:
+            print(f"Warning: No target_date or forecast_for in {filename}")
+            continue
         
         # Check if this forecast is for today (ready to score)
-        if forecast["target_date"] == today:
+        if target_date == today:
             # Check if already scored
             already_scored = any(
                 s["location"] == forecast["location"] and 
@@ -228,7 +259,11 @@ def check_and_score_forecasts():
                 continue
             
             # Fetch actual weather
-            location_data = LOCATIONS[forecast["location"]]
+            location_data = LOCATIONS.get(forecast["location"])
+            if not location_data:
+                print(f"Warning: Unknown location {forecast['location']} in {filename}")
+                continue
+            
             actual = fetch_open_meteo_actual(
                 location_data["lat"], 
                 location_data["lon"], 
@@ -236,6 +271,7 @@ def check_and_score_forecasts():
             )
             
             if not actual or not forecast.get("open_meteo"):
+                print(f"Warning: Could not score {filename} - missing data")
                 continue
             
             # Score Open-Meteo forecast only (NWS scoring comes later)
@@ -269,6 +305,9 @@ def main():
     # Fetch forecasts for multiple lead times
     lead_times = [1, 3, 7, 15]  # days ahead
     
+    success_count = 0
+    failure_count = 0
+    
     for location_code, location_data in LOCATIONS.items():
         print(f"\nProcessing {location_code} - {location_data['name']}")
         
@@ -288,20 +327,30 @@ def main():
                 days_ahead
             )
             
-            # Save both forecasts
-            save_forecast(
-                location_code,
-                target_date,
-                days_ahead,
-                open_meteo_forecast,
-                nws_forecast
-            )
+            if open_meteo_forecast:
+                # Save both forecasts
+                save_forecast(
+                    location_code,
+                    target_date,
+                    days_ahead,
+                    open_meteo_forecast,
+                    nws_forecast
+                )
+                success_count += 1
+            else:
+                print(f"Warning: Skipping {location_code} {days_ahead}-day forecast - no data")
+                failure_count += 1
     
     # Check and score any forecasts that are ready
     print("\nChecking for forecasts ready to score...")
     check_and_score_forecasts()
     
-    print("\nDone!")
+    print(f"\nDone! Successes: {success_count}, Failures: {failure_count}")
+    
+    # Only exit with error if ALL forecasts failed
+    if success_count == 0 and failure_count > 0:
+        print("ERROR: All forecast fetches failed!")
+        exit(1)
 
 if __name__ == "__main__":
     main()

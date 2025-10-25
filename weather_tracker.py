@@ -237,21 +237,31 @@ def check_and_score_forecasts():
             print(f"Warning: Could not read {filename}: {e}")
             continue
         
+        # Check for required keys
+        location_code = forecast.get("location")
+        if not location_code:
+            print(f"Warning: No location key in {filename}, skipping")
+            continue
+        
         # Handle both old and new key names for target date
         target_date = forecast.get("target_date") or forecast.get("forecast_for")
-        
-        # Skip if we can't find a target date
         if not target_date:
-            print(f"Warning: No target_date or forecast_for in {filename}")
+            print(f"Warning: No target_date or forecast_for in {filename}, skipping")
+            continue
+        
+        # Check for lead_time_days
+        lead_time = forecast.get("lead_time_days")
+        if lead_time is None:
+            print(f"Warning: No lead_time_days in {filename}, skipping")
             continue
         
         # Check if this forecast is for today (ready to score)
         if target_date == today:
             # Check if already scored
             already_scored = any(
-                s["location"] == forecast["location"] and 
-                s["target_date"] == today and 
-                s["lead_time_days"] == forecast["lead_time_days"]
+                s.get("location") == location_code and 
+                s.get("target_date") == today and 
+                s.get("lead_time_days") == lead_time
                 for s in results["scores"]
             )
             
@@ -259,9 +269,9 @@ def check_and_score_forecasts():
                 continue
             
             # Fetch actual weather
-            location_data = LOCATIONS.get(forecast["location"])
+            location_data = LOCATIONS.get(location_code)
             if not location_data:
-                print(f"Warning: Unknown location {forecast['location']} in {filename}")
+                print(f"Warning: Unknown location {location_code} in {filename}, skipping")
                 continue
             
             actual = fetch_open_meteo_actual(
@@ -276,11 +286,14 @@ def check_and_score_forecasts():
             
             # Score Open-Meteo forecast only (NWS scoring comes later)
             open_meteo_forecast = forecast["open_meteo"]
+            
+            forecast_date = forecast.get("forecast_date", "unknown")
+            
             score = {
-                "location": forecast["location"],
-                "forecast_date": forecast["forecast_date"],
+                "location": location_code,
+                "forecast_date": forecast_date,
                 "target_date": today,
-                "lead_time_days": forecast["lead_time_days"],
+                "lead_time_days": lead_time,
                 "forecasted": open_meteo_forecast,
                 "actual": actual,
                 "accuracy": {
@@ -291,7 +304,7 @@ def check_and_score_forecasts():
             }
             
             results["scores"].append(score)
-            print(f"Scored forecast: {forecast['location']} {forecast['lead_time_days']}-day")
+            print(f"Scored forecast: {location_code} {lead_time}-day")
     
     # Save updated results
     with open(results_file, 'w') as f:
