@@ -1,0 +1,62 @@
+{
+  "KBIS": {
+    "gridId": "BIS",
+    "gridX": 112,
+    "gridY": 45,
+    "forecast_url": "https://api.weather.gov/gridpoints/BIS/112,45/forecast"
+  },
+  "KBOS": {
+    "gridId": "BOX",
+    "gridX": 73,
+    "gridY": 91,
+    "forecast_url": "https://api.weather.gov/gridpoints/BOX/73,91/forecast"
+  },
+  "KDFW": {
+    "gridId": "FWD",
+    "gridX": 80,
+    "gridY": 109,
+    "forecast_url": "https://api.weather.gov/gridpoints/FWD/80,109/forecast"
+  },
+  "KDEN": {
+    "gridId": "BOU",
+    "gridX": 74,
+    "gridY": 66,
+    "forecast_url": "https://api.weather.gov/gridpoints/BOU/74,66/forecast"
+  },
+  "KLAX": {
+    "gridId": "LOX",
+    "gridX": 148,
+    "gridY": 41,
+    "forecast_url": "https://api.weather.gov/gridpoints/LOX/148,41/forecast"
+  },
+  "KMIA": {
+    "gridId": "MFL",
+    "gridX": 106,
+    "gridY": 51,
+    "forecast_url": "https://api.weather.gov/gridpoints/MFL/106,51/forecast"
+  },
+  "KOMA": {
+    "gridId": "OAX",
+    "gridX": 84,
+    "gridY": 62,
+    "forecast_url": "https://api.weather.gov/gridpoints/OAX/84,62/forecast"
+  },
+  "KORD": {
+    "gridId": "LOT",
+    "gridX": 66,
+    "gridY": 77,
+    "forecast_url": "https://api.weather.gov/gridpoints/LOT/66,77/forecast"
+  },
+  "KPDX": {
+    "gridId": "PQR",
+    "gridX": 116,
+    "gridY": 106,
+    "forecast_url": "https://api.weather.gov/gridpoints/PQR/116,106/forecast"
+  },
+  "KPHX": {
+    "gridId": "PSR",
+    "gridX": 161,
+    "gridY": 57,
+    "forecast_url": "https://api.weather.gov/gridpoints/PSR/161,57/forecast"
+  }
+}
