@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Swatches</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .swatch {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        
+        .color-box {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            margin-right: 20px;
+            border: 2px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .color-info {
+            flex: 1;
+        }
+        
+        .color-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .color-code {
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Color Swatches</h1>
+        
+        <div class="swatch">
+            <div class="color-box" style="background-color: #800000;"></div>
+            <div class="color-info">
+                <div class="color-name">Maroon (standard)</div>
+                <div class="color-code">#800000</div>
+            </div>
+        </div>
+        
+        <div class="swatch">
+            <div class="color-box" style="background-color: #8B0000;"></div>
+            <div class="color-info">
+                <div class="color-name">Dark Red</div>
+                <div class="color-code">#8B0000</div>
+            </div>
+        </div>
+        
+        <div class="swatch">
+            <div class="color-box" style="background-color: #CD5C5C;"></div>
+            <div class="color-info">
+                <div class="color-name">Indian Red</div>
+                <div class="color-code">#CD5C5C</div>
+            </div>
+        </div>
+        
+        <div class="swatch">
+            <div class="color-box" style="background-color: #B22222;"></div>
+            <div class="color-info">
+                <div class="color-name">Firebrick</div>
+                <div class="color-code">#B22222</div>
+            </div>
+        </div>
+        
+        <div class="swatch">
+            <div class="color-box" style="background-color: #DC143C;"></div>
+            <div class="color-info">
+                <div class="color-name">Crimson</div>
+                <div class="color-code">#DC143C</div>
+            </div>
+        </div>
+        
+        <div class="swatch">
+            <div class="color-box" style="background-color: #800020;"></div>
+            <div class="color-info">
+                <div class="color-name">Burgundy</div>
+                <div class="color-code">#800020</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
