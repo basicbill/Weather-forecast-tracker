@@ -286,9 +286,21 @@ def check_and_score_forecasts():
             
             # Score Open-Meteo forecast only (NWS scoring comes later)
             open_meteo_forecast = forecast["open_meteo"]
-            
+
+            # Check for None values in forecast or actual data
+            if (open_meteo_forecast.get("temp_high") is None or
+                open_meteo_forecast.get("temp_low") is None or
+                open_meteo_forecast.get("precip") is None or
+                actual.get("temp_high") is None or
+                actual.get("temp_low") is None or
+                actual.get("precip") is None):
+                print(f"Warning: Could not score {filename} - contains None values")
+                print(f"  Forecasted: temp_high={open_meteo_forecast.get('temp_high')}, temp_low={open_meteo_forecast.get('temp_low')}, precip={open_meteo_forecast.get('precip')}")
+                print(f"  Actual: temp_high={actual.get('temp_high')}, temp_low={actual.get('temp_low')}, precip={actual.get('precip')}")
+                continue
+
             forecast_date = forecast.get("forecast_date", "unknown")
-            
+
             score = {
                 "location": location_code,
                 "forecast_date": forecast_date,
@@ -302,7 +314,7 @@ def check_and_score_forecasts():
                     "precip": (open_meteo_forecast["precip"] >= TOLERANCES["precip"]) == (actual["precip"] >= TOLERANCES["precip"])
                 }
             }
-            
+
             results["scores"].append(score)
             print(f"Scored forecast: {location_code} {lead_time}-day")
     
