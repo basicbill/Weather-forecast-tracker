@@ -13649,6 +13649,636 @@
         "temp_low": false,
         "precip": true
       }
+    },
+    {
+      "location": "KPHX",
+      "forecast_date": "2025-11-16",
+      "target_date": "2025-11-19",
+      "lead_time_days": 3,
+      "forecasted": {
+        "temp_high": 60.9,
+        "temp_low": 51.8,
+        "precip": 0.098
+      },
+      "actual": {
+        "temp_high": 60.2,
+        "temp_low": 54.3,
+        "precip": 0.394
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": true,
+        "precip": false
+      }
+    },
+    {
+      "location": "KMIA",
+      "forecast_date": "2025-11-16",
+      "target_date": "2025-11-19",
+      "lead_time_days": 3,
+      "forecasted": {
+        "temp_high": 82.1,
+        "temp_low": 74.4,
+        "precip": 0.043
+      },
+      "actual": {
+        "temp_high": 83.5,
+        "temp_low": 69.1,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KORD",
+      "forecast_date": "2025-11-18",
+      "target_date": "2025-11-19",
+      "lead_time_days": 1,
+      "forecasted": {
+        "temp_high": 43.8,
+        "temp_low": 34.0,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 46.3,
+        "temp_low": 37.6,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KOMA",
+      "forecast_date": "2025-11-16",
+      "target_date": "2025-11-19",
+      "lead_time_days": 3,
+      "forecasted": {
+        "temp_high": 58.6,
+        "temp_low": 39.7,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 53.1,
+        "temp_low": 42.7,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": false,
+        "temp_low": true,
+        "precip": true
+      }
+    },
+    {
+      "location": "KBIS",
+      "forecast_date": "2025-11-12",
+      "target_date": "2025-11-19",
+      "lead_time_days": 7,
+      "forecasted": {
+        "temp_high": 44.5,
+        "temp_low": 29.9,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 51.1,
+        "temp_low": 38.5,
+        "precip": 0.106
+      },
+      "accuracy": {
+        "temp_high": false,
+        "temp_low": false,
+        "precip": false
+      }
+    },
+    {
+      "location": "KMIA",
+      "forecast_date": "2025-11-18",
+      "target_date": "2025-11-19",
+      "lead_time_days": 1,
+      "forecasted": {
+        "temp_high": 83.3,
+        "temp_low": 64.2,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 83.5,
+        "temp_low": 69.1,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KORD",
+      "forecast_date": "2025-11-12",
+      "target_date": "2025-11-19",
+      "lead_time_days": 7,
+      "forecasted": {
+        "temp_high": 44.4,
+        "temp_low": 33.6,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 46.3,
+        "temp_low": 37.6,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KDFW",
+      "forecast_date": "2025-11-16",
+      "target_date": "2025-11-19",
+      "lead_time_days": 3,
+      "forecasted": {
+        "temp_high": 77.9,
+        "temp_low": 70.3,
+        "precip": 0.252
+      },
+      "actual": {
+        "temp_high": 83.0,
+        "temp_low": 67.7,
+        "precip": 0.177
+      },
+      "accuracy": {
+        "temp_high": false,
+        "temp_low": true,
+        "precip": true
+      }
+    },
+    {
+      "location": "KOMA",
+      "forecast_date": "2025-11-18",
+      "target_date": "2025-11-19",
+      "lead_time_days": 1,
+      "forecasted": {
+        "temp_high": 48.9,
+        "temp_low": 40.4,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 53.1,
+        "temp_low": 42.7,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": false,
+        "temp_low": true,
+        "precip": true
+      }
+    },
+    {
+      "location": "KDFW",
+      "forecast_date": "2025-11-12",
+      "target_date": "2025-11-19",
+      "lead_time_days": 7,
+      "forecasted": {
+        "temp_high": 63.5,
+        "temp_low": 58.9,
+        "precip": 0.059
+      },
+      "actual": {
+        "temp_high": 83.0,
+        "temp_low": 67.7,
+        "precip": 0.177
+      },
+      "accuracy": {
+        "temp_high": false,
+        "temp_low": false,
+        "precip": false
+      }
+    },
+    {
+      "location": "KBOS",
+      "forecast_date": "2025-11-18",
+      "target_date": "2025-11-19",
+      "lead_time_days": 1,
+      "forecasted": {
+        "temp_high": 44.3,
+        "temp_low": 27.3,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 45.1,
+        "temp_low": 30.0,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": true,
+        "precip": true
+      }
+    },
+    {
+      "location": "KBOS",
+      "forecast_date": "2025-11-12",
+      "target_date": "2025-11-19",
+      "lead_time_days": 7,
+      "forecasted": {
+        "temp_high": 47.1,
+        "temp_low": 36.1,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 45.1,
+        "temp_low": 30.0,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KLAX",
+      "forecast_date": "2025-11-12",
+      "target_date": "2025-11-19",
+      "lead_time_days": 7,
+      "forecasted": {
+        "temp_high": 58.8,
+        "temp_low": 55.8,
+        "precip": 0.047
+      },
+      "actual": {
+        "temp_high": 59.8,
+        "temp_low": 46.5,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KBIS",
+      "forecast_date": "2025-11-18",
+      "target_date": "2025-11-19",
+      "lead_time_days": 1,
+      "forecasted": {
+        "temp_high": 47.3,
+        "temp_low": 39.5,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 51.1,
+        "temp_low": 38.5,
+        "precip": 0.106
+      },
+      "accuracy": {
+        "temp_high": false,
+        "temp_low": true,
+        "precip": false
+      }
+    },
+    {
+      "location": "KDEN",
+      "forecast_date": "2025-11-16",
+      "target_date": "2025-11-19",
+      "lead_time_days": 3,
+      "forecasted": {
+        "temp_high": 56.6,
+        "temp_low": 34.7,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 62.8,
+        "temp_low": 37.0,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": false,
+        "temp_low": true,
+        "precip": true
+      }
+    },
+    {
+      "location": "KLAX",
+      "forecast_date": "2025-11-18",
+      "target_date": "2025-11-19",
+      "lead_time_days": 1,
+      "forecasted": {
+        "temp_high": 60.9,
+        "temp_low": 44.8,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 59.8,
+        "temp_low": 46.5,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": true,
+        "precip": true
+      }
+    },
+    {
+      "location": "KDFW",
+      "forecast_date": "2025-11-18",
+      "target_date": "2025-11-19",
+      "lead_time_days": 1,
+      "forecasted": {
+        "temp_high": 81.2,
+        "temp_low": 67.3,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 83.0,
+        "temp_low": 67.7,
+        "precip": 0.177
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": true,
+        "precip": false
+      }
+    },
+    {
+      "location": "KMIA",
+      "forecast_date": "2025-11-12",
+      "target_date": "2025-11-19",
+      "lead_time_days": 7,
+      "forecasted": {
+        "temp_high": 83.1,
+        "temp_low": 72.8,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 83.5,
+        "temp_low": 69.1,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KORD",
+      "forecast_date": "2025-11-16",
+      "target_date": "2025-11-19",
+      "lead_time_days": 3,
+      "forecasted": {
+        "temp_high": 47.6,
+        "temp_low": 40.9,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 46.3,
+        "temp_low": 37.6,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KBIS",
+      "forecast_date": "2025-11-16",
+      "target_date": "2025-11-19",
+      "lead_time_days": 3,
+      "forecasted": {
+        "temp_high": 50.8,
+        "temp_low": 38.1,
+        "precip": 0.004
+      },
+      "actual": {
+        "temp_high": 51.1,
+        "temp_low": 38.5,
+        "precip": 0.106
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": true,
+        "precip": false
+      }
+    },
+    {
+      "location": "KPHX",
+      "forecast_date": "2025-11-18",
+      "target_date": "2025-11-19",
+      "lead_time_days": 1,
+      "forecasted": {
+        "temp_high": 69.0,
+        "temp_low": 56.1,
+        "precip": 0.071
+      },
+      "actual": {
+        "temp_high": 60.2,
+        "temp_low": 54.3,
+        "precip": 0.394
+      },
+      "accuracy": {
+        "temp_high": false,
+        "temp_low": true,
+        "precip": false
+      }
+    },
+    {
+      "location": "KDEN",
+      "forecast_date": "2025-11-18",
+      "target_date": "2025-11-19",
+      "lead_time_days": 1,
+      "forecasted": {
+        "temp_high": 61.0,
+        "temp_low": 36.2,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 62.8,
+        "temp_low": 37.0,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": true,
+        "precip": true
+      }
+    },
+    {
+      "location": "KPDX",
+      "forecast_date": "2025-11-12",
+      "target_date": "2025-11-19",
+      "lead_time_days": 7,
+      "forecasted": {
+        "temp_high": 50.8,
+        "temp_low": 41.1,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 52.2,
+        "temp_low": 39.0,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": true,
+        "precip": true
+      }
+    },
+    {
+      "location": "KBOS",
+      "forecast_date": "2025-11-16",
+      "target_date": "2025-11-19",
+      "lead_time_days": 3,
+      "forecasted": {
+        "temp_high": 46.8,
+        "temp_low": 34.7,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 45.1,
+        "temp_low": 30.0,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KPHX",
+      "forecast_date": "2025-11-12",
+      "target_date": "2025-11-19",
+      "lead_time_days": 7,
+      "forecasted": {
+        "temp_high": 62.2,
+        "temp_low": 53.7,
+        "precip": 0.197
+      },
+      "actual": {
+        "temp_high": 60.2,
+        "temp_low": 54.3,
+        "precip": 0.394
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": true,
+        "precip": true
+      }
+    },
+    {
+      "location": "KPDX",
+      "forecast_date": "2025-11-18",
+      "target_date": "2025-11-19",
+      "lead_time_days": 1,
+      "forecasted": {
+        "temp_high": 53.9,
+        "temp_low": 35.4,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 52.2,
+        "temp_low": 39.0,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KLAX",
+      "forecast_date": "2025-11-16",
+      "target_date": "2025-11-19",
+      "lead_time_days": 3,
+      "forecasted": {
+        "temp_high": 61.7,
+        "temp_low": 55.9,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 59.8,
+        "temp_low": 46.5,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": true,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KDEN",
+      "forecast_date": "2025-11-12",
+      "target_date": "2025-11-19",
+      "lead_time_days": 7,
+      "forecasted": {
+        "temp_high": 52.2,
+        "temp_low": 31.5,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 62.8,
+        "temp_low": 37.0,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": false,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KPDX",
+      "forecast_date": "2025-11-16",
+      "target_date": "2025-11-19",
+      "lead_time_days": 3,
+      "forecasted": {
+        "temp_high": 56.1,
+        "temp_low": 46.5,
+        "precip": 0.0
+      },
+      "actual": {
+        "temp_high": 52.2,
+        "temp_low": 39.0,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": false,
+        "temp_low": false,
+        "precip": true
+      }
+    },
+    {
+      "location": "KOMA",
+      "forecast_date": "2025-11-12",
+      "target_date": "2025-11-19",
+      "lead_time_days": 7,
+      "forecasted": {
+        "temp_high": 45.4,
+        "temp_low": 33.1,
+        "precip": 0.035
+      },
+      "actual": {
+        "temp_high": 53.1,
+        "temp_low": 42.7,
+        "precip": 0.0
+      },
+      "accuracy": {
+        "temp_high": false,
+        "temp_low": false,
+        "precip": true
+      }
     }
   ]
 }
