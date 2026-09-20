@@ -1,4 +1,4 @@
-# Weather Forecast Accuracy Tracker
+# Weather Forecast Accuracy Tracker (No longer connected to Netlify as of 9/20/2026)
 
 Automatically tracks the accuracy of weather forecasts by comparing predictions to actual weather. Now collecting data from **two sources**: Open-Meteo and the National Weather Service (NWS).
 
